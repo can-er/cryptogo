@@ -7,6 +7,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -46,13 +47,20 @@ func main() {
 	//encryptFile("sample.txt", []byte("foo"), "password1")
 	//fmt.Println(string(decryptFile("sample.txt", "password1")))
 
-	files := os.Args[1:]
+	var dir = os.Args[1]
+	files, err := ioutil.ReadDir(dir)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for i := 0; i < len(files); i++ {
-		content, err := os.ReadFile(files[i])
+		var filePath = dir + "/" + string(files[i].Name())
+		content, err := os.ReadFile(filePath)
 		if err != nil {
 			log.Fatal(err)
 		}
-		encryptFile(files[i], []byte(string(content)), "password1")
+		encryptFile(filePath, []byte(string(content)), "password1")
 	}
 
 }

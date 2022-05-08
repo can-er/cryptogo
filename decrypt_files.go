@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -48,9 +49,17 @@ func main() {
 	//fmt.Printf("Decrypted: %s\n", plaintext)
 	//encryptFile("sample.txt", []byte("foo"), "password1")
 	//fmt.Println(string(decryptFile("sample.txt", "password1")))
-	files := os.Args[1:]
+
+	var dir = os.Args[1]
+
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for i := 0; i < len(files); i++ {
-		fmt.Println(string(decryptFile(files[i], "password1")))
+		var filePath = dir + "/" + string(files[i].Name())
+		fmt.Println(string(decryptFile(filePath, "password1")))
 	}
 
 }
