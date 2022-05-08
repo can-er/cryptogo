@@ -47,12 +47,11 @@ func decryptFile(filename string, passphrase string) []byte {
 }
 
 func main() {
+	// Usage example:
 	//fmt.Println("Starting the application...")
 	//ciphertext := encrypt([]byte("test"), "password")
-	//fmt.Printf("Encrypted: %x\n", ciphertext)
 	//plaintext := decrypt(ciphertext, "password")
 	//fmt.Printf("Decrypted: %s\n", plaintext)
-	//encryptFile("sample.txt", []byte("foo"), "password1")
 	//fmt.Println(string(decryptFile("sample.txt", "password1")))
 
 	var dir = os.Args[1]
