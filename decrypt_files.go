@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -40,10 +39,11 @@ func decrypt(data []byte, passphrase string) []byte {
 	return plaintext
 }
 
-func decryptFile(filename string, passphrase string) []byte {
+func decryptFile(filename string, data []byte, passphrase string) {
 	// Decrypt the file content
-	data, _ := ioutil.ReadFile(filename)
-	return decrypt(data, passphrase)
+	f, _ := os.Create(filename)
+	defer f.Close()
+	f.Write(decrypt(data, passphrase))
 }
 
 func main() {
@@ -61,10 +61,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Loop through the files to decrypt
+	// Iterate over the files to encrypt
 	for i := 0; i < len(files); i++ {
 		var filePath = dir + "/" + string(files[i].Name())
-		fmt.Println(string(decryptFile(filePath, "password1")))
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Fatal(err)
+		}
+		decryptFile(filePath, []byte(string(content)), "password1")
 	}
 
 }
